@@ -53,7 +53,9 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
             $approvedBy = $approve['approved_by'] ?? '';
             $data = $auth->getUserData($approvedBy);
             $name = $data['name'] ?? $approvedBy;
-            $event->data['replace']['@APPROVER@'] = $name ? $name : $fallbackApprover;
+            $event->data['replace']['@APPROVER@'] = $name
+                ? $this->getLang('approve_text') . $name
+                : $fallbackApprover;
 
             $approvedDate = $approve['approved'] ?? null;
             if ($approvedDate) {
