@@ -40,7 +40,6 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
     # Ansicht einer Seite blockieren
     function handle_block(Doku_Event $event, $param) {
         global $ID;
-        global $INFO;
 
         if ($event->data == 'show' && isset($_GET['blockpage'])) {
             if (auth_quickaclcheck($ID) < AUTH_DELETE) return;
@@ -83,8 +82,10 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
             }
             
             global $auth;
-            $a = $auth->getUserData($INFO['editor']);
-            echo '<div class="plugin__approveblock_info">' . str_replace("%AUTHOR%",$a['name'],$this->getLang("msg_blocked")) .'</div>';
+            $editor = $INFO['editor'] ?? '';
+            $a = $auth->getUserData($editor);
+            $name = $a['name'] ?? $editor;
+            echo '<div class="plugin__approveblock_info">' . str_replace("%AUTHOR%",$name,$this->getLang("msg_blocked")) .'</div>';
             $event->preventDefault();
             return;
         }
