@@ -85,6 +85,9 @@ The fork removes breakages caused by API drift between old `approveplus`
 code and newer `approve` plugin versions
 (for example removed legacy DB accessor methods).
 
+The admin namespace batch-approval tool has also been migrated away from
+legacy raw DB access to the current `approve` helper APIs.
+
 The `2026-04-10` release also fixes the historical `totalblock`
 implementation, which previously assumed the old global `PageChangeLog`
 class and failed on newer DokuWiki core releases.

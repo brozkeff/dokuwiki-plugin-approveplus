@@ -31,10 +31,11 @@ class admin_plugin_approveplus extends DokuWiki_Admin_Plugin {
 
 
     function handle() {
-
         if (!$this->approve_inst) return;
         if (!isset($_REQUEST)) return;
-     
+        if (!checkSecurityToken()) return;
+        $r = null;
+
         $com = array_keys($_REQUEST);
 
         $list = Array();
@@ -47,7 +48,7 @@ class admin_plugin_approveplus extends DokuWiki_Admin_Plugin {
         
         if (count($list)>0) $r = $this->handle_approve($list);
         
-        if ($r===false) msg("Fail prerequisits to approve.",-1);
+        if ($r === false) msg("Fail prerequisits to approve.",-1);
 
     }
      
@@ -64,6 +65,7 @@ class admin_plugin_approveplus extends DokuWiki_Admin_Plugin {
         # output hidden values to ensure dokuwiki will return back to this plugin
         echo '<input type="hidden" name="do"   value="admin" />';
         echo '<input type="hidden" name="page" value="'.$this->getPluginName().'" />';
+        echo '<input type="hidden" name="sectok" value="'.getSecurityToken().'" />';
 
  
         echo '<h1>'.$this->getLang("admin title").'</h1>';
@@ -80,33 +82,27 @@ class admin_plugin_approveplus extends DokuWiki_Admin_Plugin {
         $ns = getNS($ID);
         $data = $this->getList($ns);
         
-         try {
-            /** @var \helper_plugin_approve_db $db_helper */
-            $db_helper = plugin_load('helper', 'approve_db');
-            $sqlite = $db_helper->getDB();
-        } catch (Exception $e) {
-            msg($e->getMessage(), -1);
+        /** @var \helper_plugin_approve_db|null $db_helper */
+        $db_helper = plugin_load('helper', 'approve_db');
+        if (!$db_helper) {
+            msg("Approve DB helper is not available.", -1);
             return;
         }
-        /** @var helper_plugin_approve $helper */
-        $helper = plugin_load('helper', 'approve');
         
         echo "<table><tr><th>".$this->getLang('table document')."</th><th>".$this->getLang('table current ver')."</th><th>".$this->getLang('table current date')."</th><th>".$this->getLang('table approve date')."</th><th>".$this->getLang('table approver')."</th><th>".$this->getLang('table diff')."</th><th>".$this->getLang('table approve')." (".$this->getLang('table all').": <input onclick='toggle(this);' id='select-all' type='checkbox'>)</th></tr>";
         
         foreach ($data as $d) {
 
-            $last_approved_rev = $helper->find_last_approved($sqlite, $d['id']);
+            $last_approved_rev = $db_helper->getLastDbRev($d['id'], 'approved');
             if (!$last_approved_rev) $last_approved_rev = -1;
             $last_change_date = @filemtime(wikiFN($d['id']));
             
 
             if ($last_approved_rev > -1) {
-                $res = $sqlite->query('SELECT approved, approved_by
-                                       FROM revision
-                                       WHERE page=? AND rev=?', $d['id'], $last_approved_rev);
-
-                $approve = $sqlite->res_fetch_assoc($res);
-                $approve['approved_by'] = $auth->getUserData($approve['approved_by'])['name'];
+                $approve = $db_helper->getPageRevision($d['id'], (int) $last_approved_rev);
+                $approvedBy = $approve['approved_by'] ?? '';
+                $udata = $auth->getUserData($approvedBy);
+                $approve['approved_by'] = $udata['name'] ?? $approvedBy ?: '-';
             } else {
                 $approve = Array('approved' => '-', 'approved_by' => '-');
             }
@@ -190,31 +186,20 @@ class admin_plugin_approveplus extends DokuWiki_Admin_Plugin {
         global $auth;
         
         # Check again: Access ONLY for admins!
-        if (!in_array('admin',$auth->getUserData($INFO['client'])['grps'])) return false;
+        $client = $INFO['client'] ?? '';
+        $userData = $auth->getUserData($client);
+        $groups = $userData['grps'] ?? [];
+        if (!is_array($groups) || !in_array('admin', $groups)) return false;
 
-        try {
-            /** @var \helper_plugin_approve_db $db_helper */
-            $db_helper = plugin_load('helper', 'approve_db');
-            $sqlite = $db_helper->getDB();
-        } catch (Exception $e) {
-            msg($e->getMessage(), -1);
+        /** @var \helper_plugin_approve_db|null $db_helper */
+        $db_helper = plugin_load('helper', 'approve_db');
+        if (!$db_helper) {
+            msg("Approve DB helper is not available.", -1);
             return false;
         }
-        /** @var helper_plugin_approve $helper */
-        $helper = plugin_load('helper', 'approve');
 
         foreach ($list as $id) {
-            $res = $sqlite->query('SELECT MAX(version)+1 FROM revision
-                                            WHERE page=?', $id);
-            $next_version = $sqlite->res2single($res);
-            if (!$next_version) {
-                $next_version = 1;
-            }
-            //approved IS NULL prevents from overriding already approved page
-            $sqlite->query('UPDATE revision
-                            SET approved=?, approved_by=?, version=?
-                            WHERE page=? AND current=1 AND approved IS NULL',
-                            date('c'), $INFO['client'], $next_version, $id);
+            $db_helper->setApprovedStatus($id);
         }
 
         return true;

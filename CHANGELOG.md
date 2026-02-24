@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Migrated the admin namespace batch-approval flow to current `approve`
+  helper APIs, removing legacy raw DB access that no longer works with
+  newer `approve` plugin versions.
 - Restored `totalblock` compatibility with DokuWiki 2025 "Librarian" and
   PHP 8.3 by supporting the namespaced core `PageChangeLog` class while
   keeping legacy fallback for older DokuWiki releases.

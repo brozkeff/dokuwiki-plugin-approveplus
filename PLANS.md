@@ -58,9 +58,9 @@ Test gate:
 
 ### Phase 2: Core compatibility modernization
 
-- [ ] Migrate remaining legacy approve helper calls to current APIs
+- [x] Migrate remaining legacy approve helper calls to current APIs
   (`approve_db`, `approve_acl`).
-- [ ] Remove direct dependence on raw approve DB handle where possible.
+- [x] Remove direct dependence on raw approve DB handle where possible.
 - [x] Add null-safe handling for missing user/revision metadata
   (PHP 8 strictness).
 - [x] Restore `totalblock` compatibility with DokuWiki 2025/PHP 8.3 by
@@ -87,8 +87,8 @@ Test gate:
 
 ### Phase 4: Admin tool modernization
 
-- [ ] Refactor admin batch approval to modern approve helper methods.
-- [ ] Preserve existing admin UX while reducing schema coupling.
+- [x] Refactor admin batch approval to modern approve helper methods.
+- [x] Preserve existing admin UX while reducing schema coupling.
 
 Test gate:
 
