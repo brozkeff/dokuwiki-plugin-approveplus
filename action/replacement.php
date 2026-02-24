@@ -29,6 +29,7 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
     
     function replacement_before(Doku_Event $event, $param) {
 		global $INFO;
+        global $auth;
 
         /** @var \helper_plugin_approve_db|null $db_helper */
         $db_helper = plugin_load('helper', 'approve_db');
@@ -39,14 +40,44 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
         $approve = $db_helper->getPageRevision($INFO['id'], (int) $rev);
         if (!$approve) return;
 
+        $fallbackApprover = $this->getLang('not_approve_text');
+        $fallbackDate = $this->getLang('DATE_text');
+        $fallbackRevision = $this->getLang('REVISION_text');
+        $fallbackRfa = $this->getLang('RFA_text');
+
+        $event->data['replace']['@APPROVE_DATE@'] = $fallbackDate;
+        $event->data['replace']['@REVISION@'] = $fallbackRevision;
+        $event->data['replace']['@RFA@'] = $fallbackRfa;
+
         if (($approve['status'] ?? '') === 'approved') {
-            global $auth;
             $approvedBy = $approve['approved_by'] ?? '';
             $data = $auth->getUserData($approvedBy);
             $name = $data['name'] ?? $approvedBy;
-            $event->data['replace']['@APPROVER@'] = $this->getLang('approve_text') . $name;
+            $event->data['replace']['@APPROVER@'] = $name ? $name : $fallbackApprover;
+
+            $approvedDate = $approve['approved'] ?? null;
+            if ($approvedDate) {
+                $ts = strtotime($approvedDate);
+                if ($ts !== false) {
+                    $event->data['replace']['@APPROVE_DATE@'] = date('m / Y', $ts);
+                }
+            }
+
+            $version = $approve['version'] ?? null;
+            if ($version !== null && $version !== '') {
+                $event->data['replace']['@REVISION@'] = (string) $version;
+            }
+
+            $rfaBy = $approve['ready_for_approval_by'] ?? '';
+            if ($rfaBy !== '') {
+                $rfaData = $auth->getUserData($rfaBy);
+                $rfaName = $rfaData['name'] ?? $rfaBy;
+                if ($rfaName !== '') {
+                    $event->data['replace']['@RFA@'] = $rfaName;
+                }
+            }
         } else {
-            $event->data['replace']['@APPROVER@'] = $this->getLang('not_approve_text');
+            $event->data['replace']['@APPROVER@'] = $fallbackApprover;
         }
 	}
 

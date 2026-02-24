@@ -47,8 +47,8 @@ Test gate:
 - [ ] No PHP warnings/notices in tested flows.
 
 ### Phase 3: Feature modernization from PR #2 (reimplemented)
-- [ ] Implement `@APPROVE_DATE@`, `@REVISION@`, `@RFA@` tokens via modern helper API.
-- [ ] Add language defaults and fallback behavior when data is unavailable.
+- [x] Implement `@APPROVE_DATE@`, `@REVISION@`, `@RFA@` tokens via modern helper API.
+- [x] Add language defaults and fallback behavior when data is unavailable.
 
 Test gate:
 - [ ] All 4 tokens resolve deterministically in PDF templates.

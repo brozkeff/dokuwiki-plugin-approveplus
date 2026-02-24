@@ -8,14 +8,18 @@ This repository is a maintained fork of the original upstream plugin from **2020
 
 - Fork maintainer: **Martin Malec**
 - Base upstream snapshot: **2020-11-23**
-- Current fork line: **2026-02-24a1**
+- Current fork line: **2026-02-24a2**
 - Main goal: keep original behavior while restoring compatibility with current systems
 
 ## Features
 
 - Block page display when no approved revision exists
 - Manually block/unblock page display independent of approval state
-- Add `@APPROVER@` replacement tag for `dw2pdf` templates
+- Add replacement tags for `dw2pdf` templates:
+  - `@APPROVER@`
+  - `@APPROVE_DATE@`
+  - `@REVISION@`
+  - `@RFA@`
 - Namespace batch-approval tool in admin area
 
 ## dw2pdf integration
@@ -23,7 +27,35 @@ This repository is a maintained fork of the original upstream plugin from **2020
 This fork is designed to work with **stock `dw2pdf` plugin**.
 
 - No custom/forked `dw2pdf` plugin is required
-- You only need a PDF template that uses the replacement tags (for example `@APPROVER@`)
+- You only need a PDF template that uses the replacement tags
+
+### Replacement token guide
+
+Available tokens from `approveplus` in `dw2pdf` templates:
+
+- `@APPROVER@`: full name of approving user, or fallback text if not approved
+- `@APPROVE_DATE@`: approval date formatted as `MM / YYYY`, or fallback `-`
+- `@REVISION@`: approval version from `approve` DB, or fallback `-`
+- `@RFA@`: full name of user who marked page ready-for-approval, or fallback `-`
+
+Your current footer example:
+
+```html
+<td style="text-align: center">@APPROVER@ (@UPDATE@)</td>
+```
+
+Suggested extended footer:
+
+```html
+<td style="text-align: center">
+  @APPROVER@ | Approved: @APPROVE_DATE@ | Revision: @REVISION@ | RFA: @RFA@ | Updated: @UPDATE@
+</td>
+```
+
+You can use the same line in both `footer_even.html` and `footer_odd.html`.
+
+Token extension is inspired by upstream PR #2:
+<https://github.com/practical-solutions/dokuwiki-plugin-approveplus/pull/2>
 
 ## Compatibility
 

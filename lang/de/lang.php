@@ -9,6 +9,9 @@ $lang["unblock_button"]    = "Seitenblockade aufheben";
 
 $lang["approve_text"]      = "Freigabe: ";
 $lang["not_approve_text"]  = "<b>Nicht freigegebene Fassung!</b>";
+$lang["RFA_text"]          = "-";
+$lang["REVISION_text"]     = "-";
+$lang["DATE_text"]         = "-";
 
 $lang['admin title']       = "Namensraum freigeben";
 
@@ -21,4 +24,3 @@ $lang['table approver']     = "Geprüft von";
 $lang['table diff']         = "Unterschiede";
 $lang['table approve']      = "Freigeben";
 $lang['table all']          = "alle";
-
