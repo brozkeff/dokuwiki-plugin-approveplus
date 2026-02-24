@@ -104,6 +104,40 @@ Test gate:
   upstream review; do not assume local branch-copy decisions should change the
   PR scope automatically.
 
+## Manual Validation Checklist
+
+### Environment Matrix
+- [ ] PHP 7.4
+- [ ] PHP 8.2
+- [ ] PHP 8.3
+- [ ] DokuWiki 2023-04-04a
+- [ ] current target DokuWiki release
+- [ ] approve plugin 2026-02-19 line
+- [ ] stock dw2pdf plugin with template replacements
+
+### Token Rendering
+- [ ] `@APPROVER@` approved page: shows localized `approve_text` + name
+- [ ] `@APPROVER@` unapproved page: shows localized `not_approve_text`
+- [ ] `@APPROVE_DATE@`: shows full datetime (`YYYY-MM-DD HH:MM:SS`) or fallback `-`
+- [ ] `@REVISION@`: shows version or fallback `-`
+- [ ] `@RFA@`: shows ready-for-approval user or fallback `-`
+- [ ] missing user metadata does not emit warnings/notices
+
+### Blocking Flows
+- [ ] block/unblock action works via menu button for editable user
+- [ ] blocked page is hidden for non-edit users
+- [ ] blocked page shows warning message for edit-capable users
+- [ ] no warnings/notices in totalblock and draftblock paths
+
+### Admin Batch Approval
+- [ ] admin page lists namespace pages correctly
+- [ ] non-admin cannot perform batch approval
+- [ ] batch approval sets current revision approved status
+- [ ] table info renders without warnings/notices
+
+### Log Quality Gate
+- [ ] no new PHP warnings/notices in webserver logs during above tests
+
 ## Commit Policy
 
 - Atomic commits with clear scope.

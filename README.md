@@ -15,6 +15,9 @@ newer `approve` plugin internals.
 - Current fork line: **2026-04-10**
 - Main goal: keep original behavior while restoring compatibility with current systems
 
+Current status: implementation is in place and **validation is in progress** (see `PLANS.md` test gates).
+See also: `CHANGELOG.md` for alpha-by-alpha change history.
+
 ## Features
 
 - Block page display when no approved revision exists
@@ -78,6 +81,15 @@ Compatibility note for recent systems:
   current fork line, including the `totalblock` action path that now uses
   the namespaced core `PageChangeLog` API with a legacy fallback for older
   DokuWiki releases.
+
+## Configuration
+
+Default options from `conf/default.php`:
+
+- `show_blockbutton` (default `1`): show the block/unblock page button in the
+  page menu for editable pages.
+- `block_unapproved` (default `1`): enable blocking pages that have no
+  approved revision.
 
 ## Notes on modernization
 
