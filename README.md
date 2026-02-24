@@ -1,29 +1,41 @@
-# DokuWiki-Plugin: Approve Plus
+# DokuWiki Plugin: Approve Plus (Fork)
 
-Additional features for the [approve-Plugin](https://www.dokuwiki.org/plugin:approve)
+`approveplus` extends the [approve plugin](https://www.dokuwiki.org/plugin:approve) with extra approval workflow features.
 
+This repository is a maintained fork of the original upstream plugin from **2020-11-23** (author: Gero Gothe), modernized for current DokuWiki and newer `approve` plugin internals.
+
+## Fork status
+
+- Fork maintainer: **Martin Malec**
+- Base upstream snapshot: **2020-11-23**
+- Current fork line: **2026-02-24a1**
+- Main goal: keep original behavior while restoring compatibility with current systems
 
 ## Features
 
-* Block showing content of pages, which have no approved version
-* Option to completely block pages independently from the approve-system (i.e. making it possible to block pages, which have an approved version)
-* Add dw2pdf template-tag ``@APPROVER@``
-* Style modifications of the original
-* In Combination with [dw2pdf / Modified Version](https://github.com/practical-solutions/dokuwiki-plugin-dw2pdf): Block pdf-Generation of unapproved pages
+- Block page display when no approved revision exists
+- Manually block/unblock page display independent of approval state
+- Add `@APPROVER@` replacement tag for `dw2pdf` templates
+- Namespace batch-approval tool in admin area
 
-### Batch approve documents in a namespace
+## dw2pdf integration
 
-Plugin to quickly approve all documents in a namespace (for instance after using the [move](https://www.dokuwiki.org/plugin:move) or [batch edit](https://www.dokuwiki.org/plugin:batchedit) plugin). Navigate to the admin section to chose the option.
+This fork is designed to work with **stock `dw2pdf` plugin**.
 
-This function is generally to be implemented in coming versions of the approve plugin (see [Issue #23](https://github.com/gkrid/dokuwiki-plugin-approve/issues/25)). 
-This function will then be removed.
-
+- No custom/forked `dw2pdf` plugin is required
+- You only need a PDF template that uses the replacement tags (for example `@APPROVER@`)
 
 ## Compatibility
 
-Tested with
+Tested/targeted compatibility:
 
-* PHP **7.3**
-* DokuWiki / **Hogfather**
-* [Approve-Plugin](https://www.dokuwiki.org/plugin:approve) Version **2020-09-21**
-* [dw2pdf / Modified Version](https://github.com/practical-solutions/dokuwiki-plugin-dw2pdf) **2020-09-15** (which is forked from dw2pdf Version **2020-08-11**)
+- PHP: **7.4 to 8.x**
+- DokuWiki: **2023-04-04a** and newer (targeting current releases)
+- Approve plugin: **2026-02-19** version line (current helper API style)
+- dw2pdf: **stock plugin**, template customization only
+
+## Notes on modernization
+
+The fork removes breakages caused by API drift between old `approveplus` code and newer `approve` plugin versions (for example removed legacy DB accessor methods).
+
+Further modernization is tracked in `PLANS.md` and is delivered in small, testable iterations.

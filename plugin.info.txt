@@ -1,7 +1,7 @@
-﻿base   approveplus
-author Gero Gothe
-email  practical@medizin-lernen.de
-date   2020-11-23
+base   approveplus
+author Gero Gothe, Martin Malec
+email  martin@brozkeff.net
+date   2026-02-24a1
 name   Approve Plus
-desc   Adds additional options for the Approve-Plugin (requires Approve-Plugin). Batch approval of namesspaces possible.
-url    https://github.com/practical-solutions/dokuwiki-plugin-approveplus
+desc   Fork of upstream 2020-11-23 release, modernized for newer DokuWiki/PHP and current approve plugin API; includes namespace batch approval and dw2pdf template replacements.
+url    https://github.com/brozkeff/dokuwiki-plugin-approveplus
