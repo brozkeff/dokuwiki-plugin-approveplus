@@ -38,18 +38,16 @@ Available tokens from `approveplus` in `dw2pdf` templates:
 - `@REVISION@`: approval version from `approve` DB, or fallback `-`
 - `@RFA@`: full name of user who marked page ready-for-approval, or fallback `-`
 
-Your current footer example:
+Simple dw2pdf footer example:
 
 ```html
 <td style="text-align: center">@APPROVER@ (@UPDATE@)</td>
 ```
 
-Suggested extended footer:
+Extended footer example:
 
 ```html
-<td style="text-align: center">
-  @APPROVER@ | Approved: @APPROVE_DATE@ | Revision: @REVISION@ | RFA: @RFA@ | Updated: @UPDATE@
-</td>
+<td style="text-align: center">@APPROVER@ / RFA: @RFA@ / @APPROVE_DATE@ | Revision: @REVISION@ | Updated: @UPDATE@</td>
 ```
 
 You can use the same line in both `footer_even.html` and `footer_odd.html`.
