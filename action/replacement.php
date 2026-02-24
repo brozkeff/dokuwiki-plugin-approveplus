@@ -29,29 +29,22 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
     
     function replacement_before(Doku_Event $event, $param) {
 		global $INFO;
-		
-        try {
-            /** @var \helper_plugin_approve_db $db_helper */
-            $db_helper = plugin_load('helper', 'approve_db');
-            $sqlite = $db_helper->getDB();
-        } catch (Exception $e) {
-            return;
-        }
+
+        /** @var \helper_plugin_approve_db|null $db_helper */
+        $db_helper = plugin_load('helper', 'approve_db');
+        if (!$db_helper) return;
+
         $last_change_date = @filemtime(wikiFN($INFO['id']));
         $rev = !$INFO['rev'] ? $last_change_date : $INFO['rev'];
+        $approve = $db_helper->getPageRevision($INFO['id'], (int) $rev);
+        if (!$approve) return;
 
-
-        $res = $sqlite->query('SELECT ready_for_approval, ready_for_approval_by,
-                                        approved, approved_by, version
-                                FROM revision
-                                WHERE page=? AND rev=?', $INFO['id'], $rev);
-
-        $approve = $sqlite->res_fetch_assoc($res);
-        
-        if ($approve['approved']) {
+        if (($approve['status'] ?? '') === 'approved') {
             global $auth;
-            $data = $auth->getUserData($approve['approved_by']);
-            $event->data['replace']['@APPROVER@'] = $this->getLang('approve_text') . $data['name'];
+            $approvedBy = $approve['approved_by'] ?? '';
+            $data = $auth->getUserData($approvedBy);
+            $name = $data['name'] ?? $approvedBy;
+            $event->data['replace']['@APPROVER@'] = $this->getLang('approve_text') . $name;
         } else {
             $event->data['replace']['@APPROVER@'] = $this->getLang('not_approve_text');
         }

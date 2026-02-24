@@ -112,7 +112,7 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
             $first += $num;
         }
         
-        return $false;
+        return false;
     }
     
     public function addsvgbutton(Doku_Event $event) {

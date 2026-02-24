@@ -29,8 +29,8 @@ Constraint:
 Use small atomic commits and test after each step.
 
 ### Phase 1: Runtime breakage fixes (first test gate)
-- [ ] Fix fatal `getDB()` usage in the code paths that currently crash runtime.
-- [ ] Fix `return $false` warning.
+- [x] Fix fatal `getDB()` usage in the code paths that currently crash runtime.
+- [x] Fix `return $false` warning.
 - [ ] Keep behavior changes minimal.
 
 Test gate:
