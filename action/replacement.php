@@ -61,7 +61,7 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
             if ($approvedDate) {
                 $ts = strtotime($approvedDate);
                 if ($ts !== false) {
-                    $event->data['replace']['@APPROVE_DATE@'] = date('m / Y', $ts);
+                    $event->data['replace']['@APPROVE_DATE@'] = date('Y-m-d H:i:s', $ts);
                 }
             }
 

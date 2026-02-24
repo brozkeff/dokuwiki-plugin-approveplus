@@ -34,7 +34,7 @@ This fork is designed to work with **stock `dw2pdf` plugin**.
 Available tokens from `approveplus` in `dw2pdf` templates:
 
 - `@APPROVER@`: full name of approving user, or fallback text if not approved
-- `@APPROVE_DATE@`: approval date formatted as `MM / YYYY`, or fallback `-`
+- `@APPROVE_DATE@`: approval date and time formatted as `YYYY-MM-DD HH:MM:SS`, or fallback `-`
 - `@REVISION@`: approval version from `approve` DB, or fallback `-`
 - `@RFA@`: full name of user who marked page ready-for-approval, or fallback `-`
 
