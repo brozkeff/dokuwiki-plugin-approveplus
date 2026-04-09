@@ -18,3 +18,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   delete permission reliably on modern PHP.
 - Switched the total block action redirect to `send_redirect()` after
   saving, avoiding continued request processing on newer DokuWiki releases.
+
+## [2026-02-24]
+
+### Fixed
+
+- Restored runtime compatibility with the current `approve` helper API and
+  removed the known `$false` warning path from the plugin.
+- Improved `dw2pdf` replacement output by restoring the `@APPROVER@` prefix
+  text and formatting `@APPROVE_DATE@` as a full datetime value.
+
+### Added
+
+- Added `dw2pdf` template replacements for `@APPROVE_DATE@`, `@REVISION@`,
+  and `@RFA@` using the modernized helper-based implementation.
+
+### Changed
+
+- Rewrote the fork metadata and README to document maintained-fork status,
+  current compatibility targets, and stock `dw2pdf` usage.
+- Added and updated the modernization plan to track the branch work in small,
+  testable steps.
