@@ -18,6 +18,10 @@ Additional reported failure (2026-04-10):
 
 ## Council Verdict (Developer/QA/DB, 3 rounds)
 
+This modernization work has been carried forward with assistance from Codex
+GPT-5.4 together with forge-council agents and skills from
+`github.com/N4M3Z/forge-council/`.
+
 ### Critical issues
 
 1. Immediate breakage comes from legacy calls to removed method
