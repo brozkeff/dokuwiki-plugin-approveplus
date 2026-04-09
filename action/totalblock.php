@@ -43,14 +43,14 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
         global $INFO;
 
         if ($event->data == 'show' && isset($_GET['blockpage'])) {
-            if (!auth_quickaclcheck($ID) >= AUTH_DELETE) return;
+            if (auth_quickaclcheck($ID) < AUTH_DELETE) return;
             
             if ($this->blocked($ID)) {
                 $summary = SUM_UNBLOCKED;
             } else $summary = SUM_BLOCKED;
 
-            saveWikiText($ID, rawWiki($ID), $summary); # Revision erzeugen            
-            header('Location: ?id='.$ID);
+            saveWikiText($ID, rawWiki($ID), $summary); # Revision erzeugen
+            send_redirect(wl($ID, '', true));
             
         }
     }
@@ -93,12 +93,8 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
 
     # Funktion prüft, ob ein Seite blockiert ist. Modifizierte Funktion aus dem approve-Plugin
     public function blocked($id) {
-        global $conf;
-
         # Search the revisions until a signal is found (block vs unblock)
-        $count = 0;
-
-        $changelog = new PageChangeLog($id);
+        $changelog = $this->createPageChangeLog($id);
         $first = -1;
         $num = 100;
         while (count($revs = $changelog->getRevisions($first, $num)) > 0) {
@@ -113,6 +109,20 @@ class action_plugin_approveplus_totalblock extends DokuWiki_Action_Plugin {
         }
         
         return false;
+    }
+
+    /**
+     * Create a page changelog instance for old and new DokuWiki core APIs.
+     *
+     * @param string $id
+     * @return object
+     */
+    protected function createPageChangeLog($id) {
+        if (class_exists('\dokuwiki\ChangeLog\PageChangeLog')) {
+            return new \dokuwiki\ChangeLog\PageChangeLog($id);
+        }
+
+        return new PageChangeLog($id);
     }
     
     public function addsvgbutton(Doku_Event $event) {

@@ -1,7 +1,7 @@
 base   approveplus
 author Gero Gothe, Martin Malec
 email  martin@brozkeff.net
-date   2026-02-24a2
+date   2026-04-10
 name   Approve Plus
-desc   Fork of upstream 2020-11-23 release, modernized for newer DokuWiki/PHP and current approve plugin API; includes namespace batch approval and dw2pdf template replacements.
+desc   Fork of upstream 2020-11-23 release, modernized for newer DokuWiki/PHP and current approve plugin API; includes namespace batch approval, dw2pdf template replacements, and DokuWiki 2025/PHP 8.3 totalblock compatibility.
 url    https://github.com/brozkeff/dokuwiki-plugin-approveplus
