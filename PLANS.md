@@ -53,7 +53,7 @@ Use small atomic commits and test after each step.
 
 Test gate:
 
-- [ ] PDF generation using `@APPROVER@` no longer fatals.
+- [x] PDF generation using `@APPROVER@` no longer fatals.
 - [ ] No `$false` warning from totalblock path.
 
 ### Phase 2: Core compatibility modernization
@@ -110,17 +110,18 @@ Test gate:
 - [ ] PHP 7.4
 - [ ] PHP 8.2
 - [ ] PHP 8.3
-- [ ] DokuWiki 2023-04-04a
+- [x] PHP 8.4
+- [x] DokuWiki 2023-04-04a
 - [ ] current target DokuWiki release
-- [ ] approve plugin 2026-02-19 line
+- [ ] approve plugin 2026-02-19+ line
 - [ ] stock dw2pdf plugin with template replacements
 
 ### Token Rendering
-- [ ] `@APPROVER@` approved page: shows localized `approve_text` + name
-- [ ] `@APPROVER@` unapproved page: shows localized `not_approve_text`
-- [ ] `@APPROVE_DATE@`: shows full datetime (`YYYY-MM-DD HH:MM:SS`) or fallback `-`
-- [ ] `@REVISION@`: shows version or fallback `-`
-- [ ] `@RFA@`: shows ready-for-approval user or fallback `-`
+- [x] `@APPROVER@` approved page shows the expected approved declaration and approver name in PDF output.
+- [x] `@APPROVER@` unapproved page shows the expected unapproved declaration in PDF output.
+- [x] `@APPROVE_DATE@` approved page shows a full datetime in PDF output.
+- [x] `@REVISION@` approved page shows the stored revision in PDF output.
+- [ ] `@RFA@` shows the ready-for-approval user for pages that are in ready-for-approval state but not yet approved.
 - [ ] missing user metadata does not emit warnings/notices
 
 ### Blocking Flows
@@ -137,6 +138,18 @@ Test gate:
 
 ### Log Quality Gate
 - [ ] no new PHP warnings/notices in webserver logs during above tests
+
+## Latest Test Notes
+
+- [x] Local manual validation on 2026-04-10: DokuWiki `2023-04-04a` with PHP `8.4` appears to work correctly for current PDF output paths.
+- [x] Approved-page PDF output was confirmed with a footer line equivalent to:
+  `Approved by: Martin Malec / RFA: Martin Malec / 2024-04-02 16:01:41 | Revision: 2 | Updated: 2024/04/02 16:01`.
+- [x] Draft/unapproved PDF output was confirmed with a footer line equivalent to:
+  `Unapproved version / RFA: - / - | Revision: - | Updated: 2025/08/08 08:35`.
+- [ ] Ready-for-approval but not yet approved pages still do not print the expected `@RFA@` user in PDF output; observed output remained `RFA: -` where the expected value was `Martin Malec`.
+- [ ] Later fix: review how `action/replacement.php` resolves `@RFA@` for ready-for-approval pages that have no approved revision yet.
+- [x] Current dw2pdf footer template used in validation:
+  `<td style="text-align: center">@APPROVER@ / RFA: @RFA@ / @APPROVE_DATE@ | Revision: @REVISION@ | Updated: @UPDATE@</td>`
 
 ## Commit Policy
 
