@@ -25,7 +25,8 @@ This function will then be removed.
 
 Tested with
 
-- PHP **8.3** and **8.4.24** under `fpm-fcgi`
+- PHP **7.4** and **8.2** syntax checks
+- PHP **8.3** and **8.4** runtime testing
 - DokuWiki **2025-05-14 "Librarian"** and **2026-07-14b "Mort"**
 - Current [approve plugin](https://www.dokuwiki.org/plugin:approve) with the
   safe user-group handling from still-unmerged
