@@ -9,6 +9,9 @@ $lang["unblock_button"]    = "Unblock Page";
 
 $lang["approve_text"]      = "Approved by: ";
 $lang["not_approve_text"]  = "<b>Unapproved version</b>";
+$lang["RFA_text"]          = "-";
+$lang["REVISION_text"]     = "-";
+$lang["DATE_text"]         = "-";
 
 $lang['admin title']       = "Approve Namespace";
 

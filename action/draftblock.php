@@ -43,29 +43,26 @@ class action_plugin_approveplus_draftblock extends DokuWiki_Action_Plugin {
     public function handle_viewer(Doku_Event $event) {
         global $INFO;
 
-        try {
-            /** @var \helper_plugin_approve_db $db_helper */
-            $db_helper = plugin_load('helper', 'approve_db');
-            $sqlite = $db_helper->getDB();
-        } catch (Exception $e) {
-            msg($e->getMessage(), -1);
-            return;
-        }
-        /** @var helper_plugin_approve $helper */
-        $helper = plugin_load('helper', 'approve');
+        /** @var \helper_plugin_approve_db|null $db_helper */
+        $db_helper = plugin_load('helper', 'approve_db');
+        /** @var \helper_plugin_approve_acl|null $acl_helper */
+        $acl_helper = plugin_load('helper', 'approve_acl');
+        if (!$db_helper || !$acl_helper) return;
 
         if ($event->data != 'show') return;
         //apply only to current page
         if ($INFO['rev'] != 0) return;
-        if (!$helper->use_approve_here($sqlite, $INFO['id'], $approver)) return;
-        if ($helper->client_can_see_drafts($INFO['id'], $approver)) return;
+        if (!$acl_helper->useApproveHere($INFO['id'])) return;
+        if ($acl_helper->clientCanSeeDrafts($INFO['id'])) return;
 
-        $last_approved_rev = $helper->find_last_approved($sqlite, $INFO['id']);
+        $last_approved_rev = $db_helper->getLastDbRev($INFO['id'], 'approved');
         //no page is approved
         if (!$last_approved_rev) {
             global $auth;
-            $a = $auth->getUserData($INFO['editor']);
-            echo '<div class="plugin__approveblock_info">' . str_replace("%AUTHOR%",$a['name'],$this->getLang("none_approved")) .'</div>';
+            $editor = $INFO['editor'] ?? '';
+            $a = $auth->getUserData($editor);
+            $name = $a['name'] ?? $editor;
+            echo '<div class="plugin__approveblock_info">' . str_replace("%AUTHOR%",$name,$this->getLang("none_approved")) .'</div>';
             $event->preventDefault();
             return;
         }
