@@ -7,6 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2026-08-24]
+
+### Fixed
+
+- Resolved `@RFA@` for ready-for-approval revisions instead of limiting the
+  replacement to revisions that were already approved.
+- Confirmed the `dw2pdf` replacement flow on DokuWiki 2026-07-14b "Mort"
+  with PHP 8.3 and PHP 8.4.24 under `fpm-fcgi`, including the
+  ready-for-approval user output.
+- Retained the previously confirmed compatibility with DokuWiki 2025-05-14
+  "Librarian" and PHP 8.3.
+
+### Changed
+
+- Documented that the additional `dw2pdf` replacements from the surviving
+  `ooleanderoo` fork were reimplemented with the current `approve` helper API.
+
 ## [2026-04-10]
 
 ### Fixed

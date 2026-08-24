@@ -12,10 +12,12 @@ newer `approve` plugin internals.
 
 - Fork maintainer: **Martin Malec**
 - Base upstream snapshot: **2020-11-23**
-- Current fork line: **2026-04-10**
-- Main goal: keep original behavior while restoring compatibility with current systems
+- Current fork line: **2026-08-24**
+- Main goal: keep original behavior while restoring compatibility with current
+  systems
 
-Current status: implementation is in place and **validation is in progress** (see `PLANS.md` test gates).
+Current status: implementation is in place and **validation is in progress**
+(see `PLANS.md` test gates).
 See also: `CHANGELOG.md` for alpha-by-alpha change history.
 
 ## Features
@@ -61,23 +63,30 @@ Extended footer example:
 
 You can use the same line in both `footer_even.html` and `footer_odd.html`.
 
-Token extension is inspired by upstream
-PR #2:
-<https://github.com/practical-solutions/dokuwiki-plugin-approveplus/pull/2>
+The additional replacement tokens first preserved in the
+[ooleanderoo fork](https://github.com/ooleanderoo/dokuwiki-plugin-approveplus)
+have been reimplemented using the current `approve` helper API. The maintained
+implementation also provides deterministic fallbacks, preserves the localized
+approver prefix, includes the full approval timestamp, and resolves `@RFA@`
+before a revision is approved.
 
 ## Compatibility
 
 Tested/targeted compatibility:
 
 - PHP: **7.4 to 8.x**
-- DokuWiki: **2023-04-04a** and newer (targeting current releases)
+- DokuWiki: **2023-04-04a**, **2025-05-14 "Librarian"**, and
+  **2026-07-14b "Mort"**
 - Approve plugin: **2026-02-19** version line
   (current helper API style)
 - dw2pdf: **stock plugin**, template customization only
 
 Compatibility note for recent systems:
 
-- DokuWiki **2025 "Librarian"** with PHP **8.3** is supported by the
+- DokuWiki **2026-07-14b "Mort"** is tested with PHP **8.3** and PHP
+  **8.4.24** under `fpm-fcgi`, including `dw2pdf` output for approved,
+  unapproved, and ready-for-approval revisions.
+- DokuWiki **2025-05-14 "Librarian"** with PHP **8.3** is tested, including the
   current fork line, including the `totalblock` action path that now uses
   the namespaced core `PageChangeLog` API with a legacy fallback for older
   DokuWiki releases.

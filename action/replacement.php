@@ -49,6 +49,15 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
         $event->data['replace']['@REVISION@'] = $fallbackRevision;
         $event->data['replace']['@RFA@'] = $fallbackRfa;
 
+        $rfaBy = $approve['ready_for_approval_by'] ?? '';
+        if ($rfaBy !== '') {
+            $rfaData = $auth->getUserData($rfaBy);
+            $rfaName = $rfaData['name'] ?? $rfaBy;
+            if ($rfaName !== '') {
+                $event->data['replace']['@RFA@'] = $rfaName;
+            }
+        }
+
         if (($approve['status'] ?? '') === 'approved') {
             $approvedBy = $approve['approved_by'] ?? '';
             $data = $auth->getUserData($approvedBy);
@@ -70,14 +79,6 @@ class action_plugin_approveplus_replacement extends DokuWiki_Action_Plugin {
                 $event->data['replace']['@REVISION@'] = (string) $version;
             }
 
-            $rfaBy = $approve['ready_for_approval_by'] ?? '';
-            if ($rfaBy !== '') {
-                $rfaData = $auth->getUserData($rfaBy);
-                $rfaName = $rfaData['name'] ?? $rfaBy;
-                if ($rfaName !== '') {
-                    $event->data['replace']['@RFA@'] = $rfaName;
-                }
-            }
         } else {
             $event->data['replace']['@APPROVER@'] = $fallbackApprover;
         }

@@ -111,49 +111,67 @@ Test gate:
 ## Manual Validation Checklist
 
 ### Environment Matrix
+
 - [ ] PHP 7.4
 - [ ] PHP 8.2
-- [ ] PHP 8.3
+- [x] PHP 8.3
 - [x] PHP 8.4
 - [x] DokuWiki 2023-04-04a
-- [ ] current target DokuWiki release
+- [x] DokuWiki 2025-05-14 "Librarian"
+- [x] DokuWiki 2026-07-14b "Mort"
 - [ ] approve plugin 2026-02-19+ line
-- [ ] stock dw2pdf plugin with template replacements
+- [x] stock dw2pdf plugin with template replacements
 
 ### Token Rendering
-- [x] `@APPROVER@` approved page shows the expected approved declaration and approver name in PDF output.
-- [x] `@APPROVER@` unapproved page shows the expected unapproved declaration in PDF output.
+
+- [x] `@APPROVER@` approved page shows the expected approved declaration and
+  approver name in PDF output.
+- [x] `@APPROVER@` unapproved page shows the expected unapproved declaration in
+  PDF output.
 - [x] `@APPROVE_DATE@` approved page shows a full datetime in PDF output.
 - [x] `@REVISION@` approved page shows the stored revision in PDF output.
-- [ ] `@RFA@` shows the ready-for-approval user for pages that are in ready-for-approval state but not yet approved.
+- [x] `@RFA@` shows the ready-for-approval user for pages that are in
+  ready-for-approval state but not yet approved.
 - [ ] missing user metadata does not emit warnings/notices
 
 ### Blocking Flows
+
 - [ ] block/unblock action works via menu button for editable user
 - [ ] blocked page is hidden for non-edit users
 - [ ] blocked page shows warning message for edit-capable users
 - [ ] no warnings/notices in totalblock and draftblock paths
 
 ### Admin Batch Approval
+
 - [ ] admin page lists namespace pages correctly
 - [ ] non-admin cannot perform batch approval
 - [ ] batch approval sets current revision approved status
 - [ ] table info renders without warnings/notices
 
 ### Log Quality Gate
+
 - [ ] no new PHP warnings/notices in webserver logs during above tests
 
 ## Latest Test Notes
 
-- [x] Local manual validation on 2026-04-10: DokuWiki `2023-04-04a` with PHP `8.4` appears to work correctly for current PDF output paths.
+- [x] Local manual validation on 2026-04-10: DokuWiki `2023-04-04a` with PHP
+  `8.4` appears to work correctly for current PDF output paths.
 - [x] Approved-page PDF output was confirmed with a footer line equivalent to:
-  `Approved by: Martin Malec / RFA: Martin Malec / 2024-04-02 16:01:41 | Revision: 2 | Updated: 2024/04/02 16:01`.
+  `Approved by: Martin Malec / RFA: Martin Malec / 2024-04-02 16:01:41 |
+  Revision: 2 | Updated: 2024/04/02 16:01`.
 - [x] Draft/unapproved PDF output was confirmed with a footer line equivalent to:
   `Unapproved version / RFA: - / - | Revision: - | Updated: 2025/08/08 08:35`.
-- [ ] Ready-for-approval but not yet approved pages still do not print the expected `@RFA@` user in PDF output; observed output remained `RFA: -` where the expected value was `Martin Malec`.
-- [ ] Later fix: review how `action/replacement.php` resolves `@RFA@` for ready-for-approval pages that have no approved revision yet.
+- [x] Manual validation on 2026-08-24: a ready-for-approval but not yet
+  approved page printed `Unapproved version -, RFA: Petra Lohnová` with
+  DokuWiki 2026-07-14b "Mort", PHP 8.3, and an updated `dw2pdf` template.
+- [x] The same DokuWiki 2026-07-14b "Mort" flow was tested with PHP 8.4.24
+  under `fpm-fcgi`.
+- [x] Updated `action/replacement.php` to resolve `@RFA@` for
+  ready-for-approval pages that have no approved revision yet; manual PDF
+  validation passed on DokuWiki 2026-07-14b "Mort" with PHP 8.3.
 - [x] Current dw2pdf footer template used in validation:
-  `<td style="text-align: center">@APPROVER@ / RFA: @RFA@ / @APPROVE_DATE@ | Revision: @REVISION@ | Updated: @UPDATE@</td>`
+  `<td style="text-align: center">@APPROVER@ / RFA: @RFA@ /
+  @APPROVE_DATE@ | Revision: @REVISION@ | Updated: @UPDATE@</td>`
 
 ## Commit Policy
 
