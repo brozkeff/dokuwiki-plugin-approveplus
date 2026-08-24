@@ -164,8 +164,9 @@ Test gate:
 - [x] Manual validation on 2026-08-24: a ready-for-approval but not yet
   approved page printed `Unapproved version -, RFA: Petra Lohnová` with
   DokuWiki 2026-07-14b "Mort", PHP 8.3, and an updated `dw2pdf` template.
-- [x] The same DokuWiki 2026-07-14b "Mort" flow was tested with PHP 8.4.24
-  under `fpm-fcgi`.
+- [x] The same DokuWiki 2026-07-14b "Mort" flow was tested with PHP 8.4.
+- [x] All plugin PHP files passed syntax checks with PHP 7.4 and PHP 8.2;
+  runtime validation on those versions remains pending.
 - [x] Updated `action/replacement.php` to resolve `@RFA@` for
   ready-for-approval pages that have no approved revision yet; manual PDF
   validation passed on DokuWiki 2026-07-14b "Mort" with PHP 8.3.

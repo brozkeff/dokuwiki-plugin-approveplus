@@ -74,7 +74,8 @@ before a revision is approved.
 
 Tested/targeted compatibility:
 
-- PHP: **7.4 to 8.x**
+- PHP: syntax-checked with **7.4** and **8.2**; runtime-tested with **8.3**
+  and **8.4**
 - DokuWiki: **2023-04-04a**, **2025-05-14 "Librarian"**, and
   **2026-07-14b "Mort"**
 - Approve plugin: **2026-02-19** version line
@@ -83,9 +84,9 @@ Tested/targeted compatibility:
 
 Compatibility note for recent systems:
 
-- DokuWiki **2026-07-14b "Mort"** is tested with PHP **8.3** and PHP
-  **8.4.24** under `fpm-fcgi`, including `dw2pdf` output for approved,
-  unapproved, and ready-for-approval revisions.
+- DokuWiki **2026-07-14b "Mort"** is tested with PHP **8.3** and **8.4**,
+  including `dw2pdf` output for approved, unapproved, and ready-for-approval
+  revisions.
 - DokuWiki **2025-05-14 "Librarian"** with PHP **8.3** is tested, including the
   current fork line, including the `totalblock` action path that now uses
   the namespaced core `PageChangeLog` API with a legacy fallback for older
